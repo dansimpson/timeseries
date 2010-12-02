@@ -1,10 +1,16 @@
 module TimeSeries
   class Series < Layer
   
+    attr_accessor :name
+  
     def initialize name, points, opts={}
       super(opts)
-      @name = name
+      self.name = name
       @points = points
+    end
+    
+    def name
+      @opts[:name]
     end
     
     def draw ctx

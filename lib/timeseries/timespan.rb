@@ -15,7 +15,7 @@ module TimeSeries
     
       ctx.fill_preserve
       ctx.set_source_color(color)
-      ctx.rectangle(x1, 0, x2, height)
+      ctx.rectangle(x1, 0, x2 - x1, height)
       ctx.fill
     
       if @text

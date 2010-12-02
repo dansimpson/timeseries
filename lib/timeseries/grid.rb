@@ -38,14 +38,9 @@ module TimeSeries
       draw_lines ctx
       draw_labels ctx
 
-      #draw the border
-      ctx.set_source_color(0xAAAAAAFF)
-      ctx.move_to(0, 0)
-      ctx.line_to(width, 0)
-      ctx.line_to(width, height)
-      ctx.line_to(0, height)
-      ctx.line_to(0, 0)
-      ctx.stroke
+      draw_layer Border.new(
+        :color => 0xAAAAAAFF
+      ), ctx
       
     end
     

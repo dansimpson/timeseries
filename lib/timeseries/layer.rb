@@ -2,7 +2,7 @@ module TimeSeries
   class Layer
     
     def initialize opts={}
-      @opts = opts
+      @opts = opts || {}
       @defaults = {}
     end
     
@@ -48,6 +48,10 @@ module TimeSeries
     
     def max
       @opts[:max] || height
+    end
+    
+    def [] key
+      @opts[key]
     end
     
     def merge other={}

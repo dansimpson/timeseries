@@ -26,6 +26,13 @@ module TimeSeries
       @opts[:rotate]
     end
     
+    def dimensions
+      ctx = Cairo::Context.new #(Cairo::ImageSurface.new(width, height))
+      ctx.set_font_size(font_size)
+      ctx.select_font_face(font_face)
+      ctx.text_extents(@text)
+    end
+    
     def draw ctx
       ctx.set_font_size(font_size)
       ctx.set_source_color(color)
