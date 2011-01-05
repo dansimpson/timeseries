@@ -1,44 +1,71 @@
 module TimeSeries
     
-  class Legend < Layer
+  class Legend < Sprite
     
-    def initialize opts={}
-      super(opts)
-      @series = []
-    end
+    attr_accessor :series, :font_size, :font_face, :font_color, :margin
     
-    def position
-    end
-    
-    def draw ctx
+    def initialize opts={}, &block
+      super
       
-      w = 100
-      h = 100
-      m = 10
+      self.series = []
+      self.font_size = opts[:font_size] || 12
+      self.font_face = opts[:font_face] || "Arial"
+      self.font_color = opts[:font_color] || 0xFFFFFFFF
+      self.margin = opts[:margin] || 8
       
-      p = 5
-      require "pp"
-      @series.each do |series|
-        #pp series
-        #series[:text]
-      end
+      on_render do |ctx|
+        
+        ctx.set_font_size(font_size)
+        ctx.set_source_color(0xFF00FFFF)
+        ctx.select_font_face(font_face)
 
-      ctx.fill_preserve
-      ctx.translate(width - w - m, height - h - m)
-      ctx.set_source_color(0x00000099)
-      ctx.rectangle(0, 0, w, h)
-      ctx.fill
+        box_width  = 0
+        box_height = padding
+        lin_height = 0
+        series.each do |s|
+          dim = ctx.text_extents(s.name)
+          lin_height  = dim.height
+          box_height += dim.height + padding
+          box_width   = [
+            dim.width,
+            box_width
+          ].max
+        end
+        
+        #account for spacing a color box
+        box_width += (padding * 4) + lin_height
+        
+        ctx.translate(width - box_width - margin, height - box_height - margin)
+        
+        # rendner background
+        ctx.fill_preserve
+        ctx.set_source_color(0x000000BB)
+        ctx.rectangle(0, 0, box_width, box_height)
+        ctx.fill
+        
+        cur_height = 0
+        series.each do |s|
+          dim = ctx.text_extents(s.name)
+          ctx.set_source_color(s.color)
+          ctx.rectangle(padding, padding + cur_height, lin_height, lin_height)
+          ctx.fill
+          TextSprite.new(
+            :x => padding + lin_height + padding,
+            :y => cur_height + padding,
+            :text => s.name,
+            :face => font_face,
+            :size => font_size,
+            :valign => :top,
+            :color => font_color
+          ).render(ctx)
+          cur_height += padding + dim.height
+        end
+      end
       
-      #@items.each do |item|
-        
-        
-        
-        #draw_layer(item, ctx)
-      #end
     end
     
     def add_series series
-      @series << series
+      self.series << series
     end
     
   end

@@ -12,7 +12,7 @@ module TimeSeries
       
       self.size = opts[:size] || 12
       self.text = opts[:text] || "Default"
-      self.color = opts[:color] || color
+      self.color = opts[:color] || 0x000000FF
       self.face = opts[:face] || "Arial"
       self.align = opts[:align]
       self.valign = opts[:valign]

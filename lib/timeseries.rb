@@ -8,14 +8,13 @@ module TimeSeries
 end
 
 require "core_ext/fixnum"
-require "timeseries/layer"
-require "timeseries/text"
+require "timeseries/sprite"
+require "timeseries/time_series_sprite"
+require "timeseries/text_sprite"
 require "timeseries/grid"
 require "timeseries/series"
 require "timeseries/legend"
 require "timeseries/timespan"
 require "timeseries/chart"
 require "timeseries/border"
-require "timeseries/sprite"
-require "timeseries/text_sprite"
 require "timeseries/annotation"

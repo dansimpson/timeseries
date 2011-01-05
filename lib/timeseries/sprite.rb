@@ -5,9 +5,10 @@ module TimeSeries
 
   class Sprite
 
+    #attr_accessor :opts
     attr_accessor :children, :parent, :callbacks
     attr_accessor :x, :y, :width, :height, :position
-    attr_accessor :background
+    attr_accessor :background, :padding
 
     def initialize opts={}, &block
       self.children = []
@@ -18,6 +19,7 @@ module TimeSeries
       self.height = opts[:height] || 0
       self.position = opts[:position] || :relative
       self.background = opts[:background]
+      self.padding = opts[:padding] || 0
     end
     
     def offset_x
@@ -32,6 +34,13 @@ module TimeSeries
     
     def add sprite
       sprite.parent = self
+      
+      sprite.width = width - (padding * 2)
+      sprite.height = height - (padding * 2)
+
+      sprite.x += padding
+      sprite.y += padding
+
       children << sprite
     end
 
@@ -56,16 +65,18 @@ module TimeSeries
         ctx.fill
       end
 
-      #ctx.translate(x, y)
-      
       unless callbacks.empty?
         callbacks.each do |cb|
+          ctx.save
           instance_exec(ctx, &cb)
+          ctx.restore
         end
       end
       
       children.each do |child|
+        ctx.save
         child.render ctx
+        ctx.restore
       end
       
       ctx.restore
